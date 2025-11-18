@@ -1,0 +1,15 @@
+[
+  {
+    "id": "M07beb92e",
+    "nome": "Maria Santos",
+    "crm": "12345-CE",
+    "especialidade": "Cardiologia",
+    "horarios_disponiveis": [
+      "08:00",
+      "09:00",
+      "10:00",
+      "11:00"
+    ],
+    "data_cadastro": "2025-11-18T08:28:24.717886"
+  }
+]
