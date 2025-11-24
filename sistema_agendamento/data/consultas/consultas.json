@@ -1,13 +1,24 @@
 [
   {
-    "id": "Ca010f8e4",
-    "paciente_id": "P01092fca",
-    "medico_id": "M07beb92e",
+    "id": "C660a4b0b",
+    "paciente_id": "Pad1c7c40",
+    "medico_id": "M4c36a52d",
     "data": "2025-11-20",
     "hora": "09:00",
     "observacoes": "Consulta de rotina",
     "status": "confirmada",
-    "data_criacao": "2025-11-18T08:28:24.717938",
-    "data_atualizacao": "2025-11-18T08:28:24.717964"
+    "data_criacao": "2025-11-24T10:11:53.751453",
+    "data_atualizacao": "2025-11-24T10:11:53.751487"
+  },
+  {
+    "id": "Cabe0f491",
+    "paciente_id": "Pd28c161f",
+    "medico_id": "M7bc7de9b",
+    "data": "2025-11-25",
+    "hora": "14:00",
+    "observacoes": "Paciente 2",
+    "status": "agendada",
+    "data_criacao": "2025-11-24T10:46:40.854996",
+    "data_atualizacao": "2025-11-24T10:46:40.855010"
   }
 ]
