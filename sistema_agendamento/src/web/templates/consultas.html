@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Consultas - Sistema de Agendamento{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>📅 Consultas</h1>
+            <a href="/consultas/nova" class="btn btn-info">
+                ➕ Agendar Consulta
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                {% if consultas %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Paciente</th>
+                                <th>Médico</th>
+                                <th>Data</th>
+                                <th>Hora</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for consulta in consultas %}
+                            <tr>
+                                <td><code>{{ consulta.id }}</code></td>
+                                <td>
+                                    {% if consulta.paciente_id in pacientes %}
+                                        {{ pacientes[consulta.paciente_id].nome }}
+                                    {% else %}
+                                        <em class="text-muted">Desconhecido</em>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if consulta.medico_id in medicos %}
+                                        {{ medicos[consulta.medico_id].nome }}
+                                        <br><small class="text-muted">{{ medicos[consulta.medico_id].especialidade }}</small>
+                                    {% else %}
+                                        <em class="text-muted">Desconhecido</em>
+                                    {% endif %}
+                                </td>
+                                <td>{{ consulta.data }}</td>
+                                <td><strong>{{ consulta.hora }}</strong></td>
+                                <td>
+                                    {% if consulta.status == 'agendada' %}
+                                        <span class="badge bg-warning">🟡 Agendada</span>
+                                    {% elif consulta.status == 'confirmada' %}
+                                        <span class="badge bg-success">🟢 Confirmada</span>
+                                    {% elif consulta.status == 'realizada' %}
+                                        <span class="badge bg-info">✅ Realizada</span>
+                                    {% elif consulta.status == 'cancelada' %}
+                                        <span class="badge bg-danger">❌ Cancelada</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if consulta.status == 'agendada' %}
+                                        <form action="/consultas/{{ consulta.id }}/confirmar" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-sm btn-success" title="Confirmar">
+                                                ✅
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+                                    {% if consulta.status not in ['cancelada', 'realizada'] %}
+                                        <form action="/consultas/{{ consulta.id }}/cancelar"
+                                              method="POST"
+                                              style="display:inline;"
+                                              onsubmit="return confirm('Tem certeza que deseja cancelar esta consulta?');">
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Cancelar">
+                                                ❌
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted mt-3 mb-0">
+                    Total: <strong>{{ consultas|length }}</strong> consulta(s) registrada(s)
+                </p>
+                {% else %}
+                <div class="alert alert-info">
+                    <p class="mb-0">📅 Nenhuma consulta agendada ainda.</p>
+                    <a href="/consultas/nova" class="btn btn-info btn-sm mt-2">
+                        Agendar primeira consulta
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

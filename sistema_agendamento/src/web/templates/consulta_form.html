@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Agendar Consulta{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">📅 Agendar Nova Consulta</h5>
+            </div>
+            <div class="card-body">
+                {% if not pacientes %}
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Atenção:</strong> Não há pacientes cadastrados.
+                        <a href="/pacientes/novo" class="alert-link">Cadastre um paciente primeiro</a>.
+                    </div>
+                {% elif not medicos %}
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Atenção:</strong> Não há médicos cadastrados.
+                        <a href="/medicos/novo" class="alert-link">Cadastre um médico primeiro</a>.
+                    </div>
+                {% else %}
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="paciente_id" class="form-label">Paciente *</label>
+                        <select class="form-select" id="paciente_id" name="paciente_id" required>
+                            <option value="">Selecione o paciente...</option>
+                            {% for paciente in pacientes %}
+                                <option value="{{ paciente.id }}">
+                                    {{ paciente.nome }} - CPF: {{ paciente.cpf }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="medico_id" class="form-label">Médico *</label>
+                        <select class="form-select" id="medico_id" name="medico_id" required onchange="atualizarHorarios()">
+                            <option value="">Selecione o médico...</option>
+                            {% for medico in medicos %}
+                                <option value="{{ medico.id }}" data-horarios="{{ medico.horarios_disponiveis|join(',') }}">
+                                    {{ medico.nome }} - {{ medico.especialidade }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="data" class="form-label">Data *</label>
+                        <input type="date" class="form-control" id="data" name="data" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="hora" class="form-label">Horário *</label>
+                        <select class="form-select" id="hora" name="hora" required>
+                            <option value="">Selecione o médico primeiro...</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            🔹 <strong>Conceito SO:</strong> Verificação de conflitos com lock para evitar race conditions
+                        </small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="observacoes" class="form-label">Observações</label>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="3"
+                                  placeholder="Informações adicionais sobre a consulta..."></textarea>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>💡 Dica:</strong> O sistema verifica automaticamente conflitos de horário usando locks para garantir que apenas uma consulta seja agendada por vez para cada médico.
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-info">
+                            📅 Agendar
+                        </button>
+                        <a href="/consultas" class="btn btn-secondary">
+                            ❌ Cancelar
+                        </a>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function atualizarHorarios() {
+    const medicoSelect = document.getElementById('medico_id');
+    const horaSelect = document.getElementById('hora');
+    const selectedOption = medicoSelect.options[medicoSelect.selectedIndex];
+
+    // Limpa horários
+    horaSelect.innerHTML = '<option value="">Selecione o horário...</option>';
+
+    if (selectedOption.value) {
+        const horarios = selectedOption.getAttribute('data-horarios').split(',');
+
+        horarios.forEach(horario => {
+            if (horario.trim()) {
+                const option = document.createElement('option');
+                option.value = horario.trim();
+                option.textContent = horario.trim();
+                horaSelect.appendChild(option);
+            }
+        });
+    }
+}
+
+// Define data mínima como hoje
+document.addEventListener('DOMContentLoaded', function() {
+    const dataInput = document.getElementById('data');
+    const hoje = new Date().toISOString().split('T')[0];
+    dataInput.min = hoje;
+});
+</script>
+{% endblock %}

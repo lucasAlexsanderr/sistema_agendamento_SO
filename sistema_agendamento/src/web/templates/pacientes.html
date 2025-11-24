@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Pacientes - Sistema de Agendamento{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>👥 Pacientes</h1>
+            <a href="/pacientes/novo" class="btn btn-primary">
+                ➕ Novo Paciente
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                {% if pacientes %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Telefone</th>
+                                <th>Email</th>
+                                <th>Cadastro</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for paciente in pacientes %}
+                            <tr>
+                                <td><code>{{ paciente.id }}</code></td>
+                                <td>{{ paciente.nome }}</td>
+                                <td>{{ paciente.cpf }}</td>
+                                <td>{{ paciente.telefone }}</td>
+                                <td>{{ paciente.email }}</td>
+                                <td>{{ paciente.data_cadastro[:10] }}</td>
+                                <td>
+                                    <a href="/pacientes/{{ paciente.id }}/editar"
+                                       class="btn btn-sm btn-warning">
+                                        ✏️ Editar
+                                    </a>
+                                    <form action="/pacientes/{{ paciente.id }}/remover"
+                                          method="POST"
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Tem certeza que deseja remover este paciente?');">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            🗑️ Remover
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted mt-3 mb-0">
+                    Total: <strong>{{ pacientes|length }}</strong> paciente(s) cadastrado(s)
+                </p>
+                {% else %}
+                <div class="alert alert-info">
+                    <p class="mb-0">📋 Nenhum paciente cadastrado ainda.</p>
+                    <a href="/pacientes/novo" class="btn btn-primary btn-sm mt-2">
+                        Cadastrar primeiro paciente
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

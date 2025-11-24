@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Editar' if paciente else 'Novo' }} Paciente{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">{{ '✏️ Editar' if paciente else '➕ Novo' }} Paciente</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome Completo *</label>
+                        <input type="text" class="form-control" id="nome" name="nome"
+                               value="{{ paciente.nome if paciente else '' }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF *</label>
+                        <input type="text" class="form-control" id="cpf" name="cpf"
+                               value="{{ paciente.cpf if paciente else '' }}"
+                               placeholder="000.000.000-00" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="telefone" class="form-label">Telefone *</label>
+                        <input type="text" class="form-control" id="telefone" name="telefone"
+                               value="{{ paciente.telefone if paciente else '' }}"
+                               placeholder="(00) 00000-0000" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                               value="{{ paciente.email if paciente else '' }}"
+                               placeholder="paciente@email.com" required>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            💾 Salvar
+                        </button>
+                        <a href="/pacientes" class="btn btn-secondary">
+                            ❌ Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

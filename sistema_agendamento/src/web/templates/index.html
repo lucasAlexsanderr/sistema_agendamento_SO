@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Sistema de Agendamento{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h1 class="mb-4">📊 Dashboard</h1>
+    </div>
+</div>
+
+<!-- Cards de Estatísticas -->
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">👥 Pacientes</h5>
+                <h2 class="mb-0">{{ stats.total_pacientes }}</h2>
+                <small>Total cadastrados</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">👨‍⚕️ Médicos</h5>
+                <h2 class="mb-0">{{ stats.total_medicos }}</h2>
+                <small>Total cadastrados</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">📅 Consultas</h5>
+                <h2 class="mb-0">{{ stats.total_consultas }}</h2>
+                <small>Total registradas</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">⏰ Agendadas</h5>
+                <h2 class="mb-0">{{ stats.consultas_por_status.agendada }}</h2>
+                <small>Aguardando confirmação</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Consultas por Status -->
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">📈 Consultas por Status</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>🟡 Agendadas</span>
+                        <span class="badge bg-warning">{{ stats.consultas_por_status.agendada }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>🟢 Confirmadas</span>
+                        <span class="badge bg-success">{{ stats.consultas_por_status.confirmada }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>✅ Realizadas</span>
+                        <span class="badge bg-info">{{ stats.consultas_por_status.realizada }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>❌ Canceladas</span>
+                        <span class="badge bg-danger">{{ stats.consultas_por_status.cancelada }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estatísticas do Cache -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">💾 Cache (Gerência de Memória)</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Tamanho</span>
+                        <span>{{ stats.cache_stats.size }}/{{ stats.cache_stats.max_size }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Hits</span>
+                        <span class="badge bg-success">{{ stats.cache_stats.hits }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Misses</span>
+                        <span class="badge bg-warning">{{ stats.cache_stats.misses }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Hit Rate</span>
+                        <span class="badge bg-info">{{ stats.cache_stats.hit_rate_percent }}%</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Uso de Memória</span>
+                        <span class="badge bg-primary">{{ stats.cache_stats.memory_usage_percent }}%</span>
+                    </li>
+                </ul>
+                <form action="/api/cache/clear" method="POST" class="mt-3">
+                    <button type="submit" class="btn btn-sm btn-outline-danger w-100">🗑️ Limpar Cache</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ações Rápidas -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">⚡ Ações Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="/pacientes/novo" class="btn btn-primary w-100 mb-2">
+                            ➕ Novo Paciente
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="/medicos/novo" class="btn btn-success w-100 mb-2">
+                            ➕ Novo Médico
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="/consultas/nova" class="btn btn-info w-100 mb-2">
+                            📅 Agendar Consulta
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Conceitos de SO Demonstrados -->
+<div class="row mt-4 mb-5">
+    <div class="col-md-12">
+        <div class="card border-info">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">🔹 Conceitos de Sistemas Operacionais Implementados</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Threads:</strong> Processamento concorrente de agendamentos</li>
+                            <li><strong>Sincronização:</strong> Locks para evitar race conditions</li>
+                            <li><strong>Cache (Memória):</strong> LRU com estatísticas em tempo real</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Sistema de Arquivos:</strong> Persistência em JSON</li>
+                            <li><strong>I/O:</strong> Operações atômicas de leitura/escrita</li>
+                            <li><strong>Configuração:</strong> Detecção automática de SO</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

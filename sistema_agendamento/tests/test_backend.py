@@ -30,14 +30,30 @@ def teste_agendamento_concorrente():
     storage = JSONStorage(config.get_consultas_dir())
     service = AgendamentoService(storage)
 
+    # Gera CPFs únicos usando timestamp
+    import uuid
+    cpf1 = f"test_{uuid.uuid4().hex[:8]}"
+    cpf2 = f"test_{uuid.uuid4().hex[:8]}"
+    crm = f"CRM_{uuid.uuid4().hex[:6]}"
+
     # Cria pacientes
     print("\n📋 Criando pacientes...")
-    _, _, paciente1 = service.criar_paciente("João 1", "111", "(85) 1", "j1@test.com")
-    _, _, paciente2 = service.criar_paciente("João 2", "222", "(85) 2", "j2@test.com")
+    sucesso1, msg1, paciente1 = service.criar_paciente("João 1", cpf1, "(85) 1", "j1@test.com")
+    if not sucesso1:
+        print(f"   ⚠️  Paciente 1: {msg1}")
+        return False
+
+    sucesso2, msg2, paciente2 = service.criar_paciente("João 2", cpf2, "(85) 2", "j2@test.com")
+    if not sucesso2:
+        print(f"   ⚠️  Paciente 2: {msg2}")
+        return False
 
     # Cria médico
     print("👨‍⚕️ Criando médico...")
-    _, _, medico = service.criar_medico("Dr. Teste", "99999", "Clínico", ["14:00"])
+    sucesso3, msg3, medico = service.criar_medico("Dr. Teste Concorrente", crm, "Clínico", ["14:00"])
+    if not sucesso3:
+        print(f"   ⚠️  Médico: {msg3}")
+        return False
 
     print(f"\n🎯 Paciente 1: {paciente1.id}")
     print(f"🎯 Paciente 2: {paciente2.id}")

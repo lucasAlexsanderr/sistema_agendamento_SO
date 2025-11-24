@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Médicos - Sistema de Agendamento{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>👨‍⚕️ Médicos</h1>
+            <a href="/medicos/novo" class="btn btn-success">
+                ➕ Novo Médico
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                {% if medicos %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>CRM</th>
+                                <th>Especialidade</th>
+                                <th>Horários Disponíveis</th>
+                                <th>Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for medico in medicos %}
+                            <tr>
+                                <td><code>{{ medico.id }}</code></td>
+                                <td>{{ medico.nome }}</td>
+                                <td>{{ medico.crm }}</td>
+                                <td>
+                                    <span class="badge bg-info">{{ medico.especialidade }}</span>
+                                </td>
+                                <td>
+                                    {% for horario in medico.horarios_disponiveis %}
+                                        <span class="badge bg-success">{{ horario }}</span>
+                                    {% endfor %}
+                                </td>
+                                <td>{{ medico.data_cadastro[:10] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted mt-3 mb-0">
+                    Total: <strong>{{ medicos|length }}</strong> médico(s) cadastrado(s)
+                </p>
+                {% else %}
+                <div class="alert alert-info">
+                    <p class="mb-0">👨‍⚕️ Nenhum médico cadastrado ainda.</p>
+                    <a href="/medicos/novo" class="btn btn-success btn-sm mt-2">
+                        Cadastrar primeiro médico
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

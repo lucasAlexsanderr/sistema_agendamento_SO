@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Novo Médico{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">➕ Novo Médico</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome Completo *</label>
+                        <input type="text" class="form-control" id="nome" name="nome"
+                               placeholder="Dr(a). Nome Sobrenome" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="crm" class="form-label">CRM *</label>
+                        <input type="text" class="form-control" id="crm" name="crm"
+                               placeholder="12345-UF" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="especialidade" class="form-label">Especialidade *</label>
+                        <input type="text" class="form-control" id="especialidade" name="especialidade"
+                               placeholder="Ex: Cardiologia, Pediatria" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="horarios" class="form-label">Horários Disponíveis *</label>
+                        <input type="text" class="form-control" id="horarios" name="horarios"
+                               placeholder="08:00, 09:00, 10:00, 14:00, 15:00" required>
+                        <small class="form-text text-muted">
+                            Separe os horários por vírgula (formato 24h: HH:MM)
+                        </small>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>💡 Dica:</strong> Os horários digitados aqui estarão disponíveis para agendamento de consultas.
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">
+                            💾 Salvar
+                        </button>
+                        <a href="/medicos" class="btn btn-secondary">
+                            ❌ Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

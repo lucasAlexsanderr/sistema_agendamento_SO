@@ -21,5 +21,15 @@
       "14:00"
     ],
     "data_cadastro": "2025-11-24T10:46:40.847641"
+  },
+  {
+    "id": "M8d271383",
+    "nome": "Dr. Teste Concorrente",
+    "crm": "CRM_036970",
+    "especialidade": "Clínico",
+    "horarios_disponiveis": [
+      "14:00"
+    ],
+    "data_cadastro": "2025-11-24T18:27:50.590801"
   }
 ]

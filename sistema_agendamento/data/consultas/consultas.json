@@ -20,5 +20,16 @@
     "status": "agendada",
     "data_criacao": "2025-11-24T10:46:40.854996",
     "data_atualizacao": "2025-11-24T10:46:40.855010"
+  },
+  {
+    "id": "C5d89bad5",
+    "paciente_id": "Pf3cfb22f",
+    "medico_id": "M8d271383",
+    "data": "2025-11-25",
+    "hora": "14:00",
+    "observacoes": "Paciente 2",
+    "status": "agendada",
+    "data_criacao": "2025-11-24T18:27:50.598894",
+    "data_atualizacao": "2025-11-24T18:27:50.598901"
   }
 ]
