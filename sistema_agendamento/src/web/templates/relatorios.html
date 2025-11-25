@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Relatórios - Sistema de Agendamento{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h1 class="mb-4">📊 Relatórios</h1>
+    </div>
+</div>
+
+<!-- Gerar Novos Relatórios -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">📝 Gerar Novos Relatórios</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-info">
+                            <div class="card-body text-center">
+                                <h5>📅 Consultas</h5>
+                                <p class="text-muted">Relatório completo de todas as consultas</p>
+                                <a href="/relatorios/gerar/consultas/csv" class="btn btn-info">
+                                    📥 Baixar CSV
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-primary">
+                            <div class="card-body text-center">
+                                <h5>👥 Pacientes</h5>
+                                <p class="text-muted">Lista completa de pacientes cadastrados</p>
+                                <a href="/relatorios/gerar/pacientes/csv" class="btn btn-primary">
+                                    📥 Baixar CSV
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <div class="card border-success">
+                            <div class="card-body text-center">
+                                <h5>👨‍⚕️ Médicos</h5>
+                                <p class="text-muted">Lista de médicos e horários</p>
+                                <a href="/relatorios/gerar/medicos/csv" class="btn btn-success">
+                                    📥 Baixar CSV
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-info mt-3">
+                    <strong>🔹 Conceito SO:</strong> Os relatórios são gerados usando operações de I/O com flush e fsync para garantir que os dados sejam escritos no disco de forma segura.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Relatórios Gerados -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">📁 Relatórios Gerados</h5>
+            </div>
+            <div class="card-body">
+                {% if relatorios %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Arquivo</th>
+                                <th>Tamanho</th>
+                                <th>Data de Criação</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for relatorio in relatorios %}
+                            <tr>
+                                <td>
+                                    <code>{{ relatorio.nome }}</code>
+                                </td>
+                                <td>{{ relatorio.tamanho_kb }} KB</td>
+                                <td>{{ relatorio.data_criacao[:19].replace('T', ' ') }}</td>
+                                <td>
+                                    <a href="/relatorios/download/{{ relatorio.nome }}"
+                                       class="btn btn-sm btn-primary">
+                                        📥 Download
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted mt-3 mb-0">
+                    Total: <strong>{{ relatorios|length }}</strong> relatório(s) gerado(s)
+                </p>
+                {% else %}
+                <div class="alert alert-info">
+                    <p class="mb-0">📊 Nenhum relatório gerado ainda.</p>
+                    <p class="mb-0 mt-2">Clique nos botões acima para gerar seu primeiro relatório!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

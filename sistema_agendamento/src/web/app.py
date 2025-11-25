@@ -252,3 +252,57 @@ if __name__ == '__main__':
         debug=True,
         use_reloader=False  # Evita duplicação de threads
     )
+
+# ==================== RELATÓRIOS ====================
+
+from reports import RelatorioService
+from flask import send_file
+
+relatorio_service = RelatorioService(config.get_relatorios_dir())
+
+
+@app.route('/relatorios')
+def relatorios():
+    """Lista relatórios gerados"""
+    lista_relatorios = relatorio_service.listar_relatorios()
+    return render_template('relatorios.html', relatorios=lista_relatorios)
+
+
+@app.route('/relatorios/gerar/consultas/csv')
+def gerar_csv_consultas():
+    """Gera relatório CSV de consultas"""
+    try:
+        consultas = agendamento.listar_consultas()
+        pacientes = {p.id: p for p in agendamento.listar_pacientes()}
+        medicos = {m.id: m for m in agendamento.listar_medicos()}
+
+        filepath = relatorio_service.gerar_csv_consultas(consultas, pacientes, medicos)
+        flash('Relatório CSV gerado com sucesso!', 'success')
+        return send_file(filepath, as_attachment=True, download_name=os.path.basename(filepath))
+    except Exception as e:
+        flash(f'Erro ao gerar relatório: {str(e)}', 'error')
+        return redirect(url_for('relatorios'))
+
+
+@app.route('/relatorios/gerar/pacientes/csv')
+def gerar_csv_pacientes():
+    """Gera relatório CSV de pacientes"""
+    try:
+        pacientes = agendamento.listar_pacientes()
+        filepath = relatorio_service.gerar_csv_pacientes(pacientes)
+        return send_file(filepath, as_attachment=True, download_name=os.path.basename(filepath))
+    except Exception as e:
+        flash(f'Erro ao gerar relatório: {str(e)}', 'error')
+        return redirect(url_for('relatorios'))
+
+
+@app.route('/relatorios/gerar/medicos/csv')
+def gerar_csv_medicos():
+    """Gera relatório CSV de médicos"""
+    try:
+        medicos = agendamento.listar_medicos()
+        filepath = relatorio_service.gerar_csv_medicos(medicos)
+        return send_file(filepath, as_attachment=True, download_name=os.path.basename(filepath))
+    except Exception as e:
+        flash(f'Erro ao gerar relatório: {str(e)}', 'error')
+        return redirect(url_for('relatorios'))

@@ -17,9 +17,9 @@
     "data": "2025-11-25",
     "hora": "14:00",
     "observacoes": "Paciente 2",
-    "status": "agendada",
+    "status": "cancelada",
     "data_criacao": "2025-11-24T10:46:40.854996",
-    "data_atualizacao": "2025-11-24T10:46:40.855010"
+    "data_atualizacao": "2025-11-25T10:11:55.291649"
   },
   {
     "id": "C5d89bad5",
